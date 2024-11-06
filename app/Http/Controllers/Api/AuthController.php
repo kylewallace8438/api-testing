@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -13,20 +14,22 @@ class AuthController extends Controller
 
     public function createUser(Request $request)
     {
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
-        ]);
-
-        $data = [
-            'token' => $user->createToken("api")->plainTextToken,
-            'token_type' => 'Bearer',
-        ];
-        return response()->json([
-            'access_token' => $data['token'],
-            'token_type' => $data['token_type'],
-        ]);
+        try {
+            User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password)
+            ]);
+            $verified_email = false;
+            return response()->json([
+                'verified_email' => $verified_email
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => $e->getCode(),
+                'message' => $e->getMessage(),
+            ], 400);
+        }
     }
 
     public function login(Request $request)
