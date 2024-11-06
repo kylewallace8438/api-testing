@@ -23,7 +23,16 @@ class NoteController extends Controller
 
     public function edit($id, Request $request)
     {
-
+        try {
+            $note = Note::find($id);
+            $note->fill($request->all())->save();
+            return $note;
+        } catch (Exception $e) {
+            return response()->json([
+                'code' => $e->getCode(),
+                'message' => $e->getMessage()
+            ]);
+        }
     }
 
     public function list(Request $request)
