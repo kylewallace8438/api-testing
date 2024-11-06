@@ -16,7 +16,8 @@ class Note extends Model
         'description',
         'content',
         'is_pinned',
-        'tags'
+        'tags',
+        'user_id'
     ];
 
     protected function casts(): array
@@ -24,5 +25,10 @@ class Note extends Model
         return [
             'is_pinned' => 'boolean'
         ];
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 }

@@ -18,6 +18,8 @@ return new class extends Migration
             $table->longText('content');
             $table->boolean('is_pinned', false);
             $table->string('tags')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->index(['user_id']);
             $table->timestamps();
         });
     }
