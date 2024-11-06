@@ -25,8 +25,9 @@ class NoteController extends Controller
     {
         try {
             $note = Note::find($id);
-            $note->fill($request->all())->save();
-            return $note;
+            $note->fill($request->all());
+            $new_note = $note->save();
+            return $new_note;
         } catch (Exception $e) {
             return response()->json([
                 'code' => $e->getCode(),
