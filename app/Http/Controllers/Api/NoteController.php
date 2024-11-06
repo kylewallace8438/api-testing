@@ -12,7 +12,7 @@ class NoteController extends Controller
     public function create(Request $request)
     {
         try {
-            Note::create(array_merge($request->all(), ['user_id' => $request->user->id]));
+            Note::create(array_merge($request->all(), ['user_id' => $request->user()->id]));
         } catch (Exception $e) {
             return response()->json([
                 'code' => $e->getCode(),
